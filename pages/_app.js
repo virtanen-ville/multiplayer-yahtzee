@@ -24,6 +24,7 @@ export default function MyApp(props) {
 					name="viewport"
 					content="initial-scale=1, width=device-width"
 				/>
+				<title>Yatzy</title>
 			</Head>
 
 			<ThemeProvider theme={theme}>

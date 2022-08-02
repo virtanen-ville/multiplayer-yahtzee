@@ -1,23 +1,15 @@
 import { Typography, Button } from "@mui/material";
+import { Icon } from "@iconify/react";
 
 const Die = (props) => {
 	return (
-		<div
-			//style={{ color: "red", display: "inline" }}
+		<Icon
 			onClick={props.onClick}
-		>
-			<Typography size="2em" span color="primary">
-				{props.value}
-			</Typography>
-			<Typography
-				size="2em"
-				span
-				margin="100"
-				css={{ marginLeft: "10px", marginBottom: "20px" }}
-			>
-				{props.locked ? "Locked" : "Open"}
-			</Typography>
-		</div>
+			inline
+			width="100"
+			color={`${props.locked ? "#757de8" : "#002984"}`}
+			icon={`mdi:dice-${props.value}`}
+		/>
 	);
 };
 

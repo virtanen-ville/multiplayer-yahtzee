@@ -19,6 +19,7 @@
 		"react-dom": "latest"
 	},
 	"devDependencies": {
+		"@iconify/react": "^3.2.2",
 		"eslint": "latest",
 		"eslint-config-next": "latest"
 	}
