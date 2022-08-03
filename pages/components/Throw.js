@@ -1,6 +1,5 @@
 import { Typography, Button } from "@mui/material";
 
-import React from "react";
 const Throw = (props) => {
 	return (
 		<>

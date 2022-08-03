@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import * as calculateScores from "../../utils/calculateScores";
 import Dice from "./Dice";
 import Throw from "./Throw";
@@ -15,6 +15,8 @@ const GameScreen = ({ players }) => {
 	const [bonusScores, setBonusScores] = useState([]);
 	const [allScores, setAllScores] = useState([]);
 	const [rounds, setRounds] = useState(15);
+	const [rotateDice, setRotateDice] = useState(false);
+
 	const scoreRows = [
 		"ones",
 		"twos",
@@ -90,18 +92,32 @@ const GameScreen = ({ players }) => {
 		}
 		setBonusScores(newBonusScores);
 	};
+	const timerRef = useRef(null);
 
 	const throwDice = () => {
-		let newDice = [...dice];
-		for (let i = 0; i < 5; i++) {
-			if (!newDice[i].locked) {
-				newDice[i].value = Math.floor(Math.random() * 6) + 1;
-			}
-		}
-		setDice(newDice);
+		console.log(dice);
+		setTimeout(
+			() =>
+				setDice((prevState) => {
+					const newState = prevState.map((die) => {
+						if (!die.locked) {
+							return {
+								...die,
+								value: Math.floor(Math.random() * 6) + 1,
+							};
+						}
+						return die;
+					});
+					return newState;
+				}),
+			3000
+		);
+
 		if (throwsLeft > 0) {
 			setThrowsLeft(throwsLeft - 1);
 		}
+		setRotateDice(true);
+		setTimeout(() => setRotateDice(false), 3000);
 	};
 
 	const resetDice = () => {
@@ -149,7 +165,12 @@ const GameScreen = ({ players }) => {
 
 	return (
 		<Box sx={{ textAlign: "center" }}>
-			<Dice dice={dice} setDice={setDice} throwsLeft={throwsLeft} />
+			<Dice
+				rotateDice={rotateDice}
+				dice={dice}
+				setDice={setDice}
+				throwsLeft={throwsLeft}
+			/>
 			<Throw throwsLeft={throwsLeft} throwDice={throwDice} />
 			<Turn players={players} playerTurn={playerTurn} rounds={rounds} />
 			<ScoreTable
