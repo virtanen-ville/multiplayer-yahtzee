@@ -63,7 +63,7 @@ const ScoreTable = (props) => {
 				sx={{ minWidth: "100%" }}
 			>
 				<TableHead>
-					<TableRow sx={{ backgroundColor: "#757de8" }}>
+					<TableRow sx={{ backgroundColor: "primary" }}>
 						<TableCell>Upper Section</TableCell>
 						{props.scoreCard.map((player, index) => {
 							return (
