@@ -1,6 +1,4 @@
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import ButtonBase from "@mui/material/ButtonBase";
+import { TableRow, TableCell, ButtonBase } from "@mui/material";
 
 const ScoreTableRow = (props) => {
 	return (

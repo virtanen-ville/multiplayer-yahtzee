@@ -1,15 +1,9 @@
-import Head from "next/head";
-import Dice from "./components/Dice";
-import ThrowButton from "./components/ThrowButton";
-import ScoreTable from "./components/ScoreTable";
 import GameScreen from "./components/GameScreen";
 import * as React from "react";
 import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
 import { Button, Box } from "@mui/material";
-import Link from "../src/Link";
 import PlayerDialog from "./components/PlayerDialog";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Home() {
 	const [players, setPlayers] = React.useState([]);

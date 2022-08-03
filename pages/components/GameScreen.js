@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import * as calculateScores from "../../utils/calculateScores";
 import Dice from "./Dice";
-import ThrowButton from "./ThrowButton";
+import Throw from "./Throw";
 import ScoreTable from "./ScoreTable";
-import Button from "@mui/material/Button";
 import TotalScores from "./TotalScores";
 import Turn from "./Turn";
 import { Box } from "@mui/system";
@@ -92,6 +91,19 @@ const GameScreen = ({ players }) => {
 		setBonusScores(newBonusScores);
 	};
 
+	const throwDice = () => {
+		let newDice = [...dice];
+		for (let i = 0; i < 5; i++) {
+			if (!newDice[i].locked) {
+				newDice[i].value = Math.floor(Math.random() * 6) + 1;
+			}
+		}
+		setDice(newDice);
+		if (throwsLeft > 0) {
+			setThrowsLeft(throwsLeft - 1);
+		}
+	};
+
 	const resetDice = () => {
 		let diceArray = [];
 
@@ -137,14 +149,8 @@ const GameScreen = ({ players }) => {
 
 	return (
 		<Box sx={{ textAlign: "center" }}>
-			<Dice
-				dice={dice}
-				setDice={setDice}
-				throwsLeft={throwsLeft}
-				setThrowsLeft={setThrowsLeft}
-				resetDice={resetDice}
-				firstSetDice={firstSetDice}
-			/>
+			<Dice dice={dice} setDice={setDice} throwsLeft={throwsLeft} />
+			<Throw throwsLeft={throwsLeft} throwDice={throwDice} />
 			<Turn players={players} playerTurn={playerTurn} rounds={rounds} />
 			<ScoreTable
 				players={players}

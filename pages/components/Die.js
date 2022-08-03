@@ -1,4 +1,3 @@
-import { Typography, Button } from "@mui/material";
 import { Icon } from "@iconify/react";
 
 const Die = (props) => {
