@@ -1,11 +1,13 @@
 import { useEffect, useState, useRef } from "react";
-import * as calculateScores from "../../utils/calculateScores";
+import * as calculateScores from "../utils/calculateScores";
 import Dice from "./Dice";
 import Throw from "./Throw";
 import ScoreTable from "./ScoreTable";
 import TotalScores from "./TotalScores";
 import Turn from "./Turn";
 import { Box } from "@mui/system";
+
+import socket from "../utils/socket";
 
 const GameScreen = ({ players }) => {
 	const [scoreCard, setScoreCard] = useState([]);
@@ -94,29 +96,29 @@ const GameScreen = ({ players }) => {
 	};
 
 	const throwDice = () => {
-		console.log(dice);
-		setTimeout(
-			() =>
-				setDice((prevState) => {
-					const newState = prevState.map((die) => {
-						if (!die.locked) {
-							return {
-								...die,
-								value: Math.floor(Math.random() * 6) + 1,
-							};
-						}
-						return die;
-					});
-					return newState;
-				}),
-			3000
-		);
+		setTimeout(() =>
+			//setDice((prevState) =>
+			{
+				const newState = dice.map((die) => {
+					if (!die.locked) {
+						return {
+							...die,
+							value: Math.floor(Math.random() * 6) + 1,
+						};
+					}
+					return die;
+				});
+				//return newState;
+				socket.emit("newDice", newState);
+				socket.emit("rotateDice", false);
+			}, 3000);
 
 		if (throwsLeft > 0) {
-			setThrowsLeft(throwsLeft - 1);
+			socket.emit("throwsLeft", throwsLeft - 1);
+			//setThrowsLeft(throwsLeft - 1);
 		}
-		setRotateDice(true);
-		setTimeout(() => setRotateDice(false), 3000);
+		//setRotateDice(true);
+		socket.emit("rotateDice", true);
 	};
 
 	const resetDice = () => {
@@ -128,9 +130,12 @@ const GameScreen = ({ players }) => {
 				locked: false,
 			});
 		}
-		setDice(diceArray);
+		socket.emit("newDice", diceArray);
+
+		//setDice(diceArray);
 	};
 
+	/*
 	const firstSetDice = () => {
 		let diceArray = [];
 
@@ -143,6 +148,7 @@ const GameScreen = ({ players }) => {
 		setDice(diceArray);
 		setThrowsLeft(2);
 	};
+	*/
 
 	useEffect(() => {
 		resetScoreCard();
@@ -150,6 +156,7 @@ const GameScreen = ({ players }) => {
 
 	useEffect(() => {
 		calculateBonusScores();
+		//socket.emit("scoreChange", scoreCard);
 	}, [scoreCard]);
 
 	useEffect(() => {
@@ -158,9 +165,47 @@ const GameScreen = ({ players }) => {
 
 	useEffect(() => {
 		setRounds(15 * players.length);
-		firstSetDice();
+		resetDice();
 		resetScoreCard();
 	}, [players]);
+
+	// useEffect(() => {
+	// 	socket.emit("scoreChange", scoreCard);
+	// }, [scoreCard]);
+
+	useEffect(() => {
+		socket.on("newDice", (newDice) => {
+			setDice(newDice);
+		});
+
+		socket.on("newRounds", (newRounds) => {
+			setRounds(newRounds);
+		});
+
+		socket.on("newTurn", (newTurn) => {
+			setRounds(newTurn);
+		});
+
+		socket.on("throwsLeft", (throwsLeft) => {
+			setThrowsLeft(throwsLeft);
+		});
+		socket.on("rotateDice", (rotateDice) => {
+			setRotateDice(rotateDice);
+		});
+
+		socket.on("newScoreCard", (newScoreCard) => {
+			console.log(newScoreCard);
+			setScoreCard(newScoreCard);
+		});
+
+		return () => {
+			socket.off("connect");
+			socket.off("disconnect");
+			socket.off("firstConnection");
+			socket.off("playerSet");
+			socket.off("dieThrow");
+		};
+	}, []);
 
 	return (
 		<Box sx={{ textAlign: "center" }}>

@@ -6,6 +6,7 @@
 		"start": "next start",
 		"lint": "next lint"
 	},
+	"proxy": "ws://localhost:8999/",
 	"dependencies": {
 		"@emotion/cache": "latest",
 		"@emotion/react": "latest",
@@ -15,8 +16,9 @@
 		"@mui/material": "latest",
 		"next": "latest",
 		"prop-types": "latest",
-		"react": "latest",
-		"react-dom": "latest"
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"socket.io-client": "^4.5.1"
 	},
 	"devDependencies": {
 		"@iconify/react": "^3.2.2",

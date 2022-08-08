@@ -6,11 +6,11 @@ import PlayerDialog from "./components/PlayerDialog";
 import Chat from "./components/Chat";
 import MultiPlayerDialog from "./components/MultiPlayerDialog";
 import { useState, useEffect } from "react";
-import { io } from "socket.io-client";
+import socket from "./utils/socket";
 
-const socket = io("http://127.0.0.1:8999");
+import "./App.css";
 
-export default function Home() {
+export default function App() {
 	const [isConnected, setIsConnected] = useState(socket.connected);
 
 	const [players, setPlayers] = useState([]);
@@ -23,25 +23,17 @@ export default function Home() {
 			console.log(socket.id);
 		});
 
-		socket.on("firstConnection", (playersFromServer) => {
-			setPlayers(playersFromServer);
-		});
-
 		socket.on("disconnect", () => {
 			setIsConnected(false);
 			console.log(socket.id);
-		});
-
-		socket.on("dieThrow", (dieThrowData) => {
-			setMessages([message, ...messages]);
 		});
 
 		socket.on("newPlayer", (newPlayer) => {
 			setPlayers((prevState) => [...prevState, newPlayer]);
 		});
 
-		socket.on("user has joined", (user) => {
-			console.log("user has joined", user);
+		socket.on("playersArray", (newPlayers) => {
+			setPlayers(newPlayers);
 		});
 
 		return () => {
