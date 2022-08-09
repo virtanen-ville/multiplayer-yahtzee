@@ -54,16 +54,17 @@ const ScoreTable = (props) => {
 			//props.setRounds((prevState) => prevState - 1);
 			socket.emit("newRounds", props.rounds - 1);
 
+			socket.emit("newScoreCard", newState);
+
+			// Be sure to set the turn last so that the server can know that the player has finished
 			if (props.playerTurn === props.players.length - 1) {
 				//props.setPlayerTurn(0);
-				socket.emit("playerTurn", 0);
+				socket.emit("newTurn", 0);
 			} else {
 				//props.setPlayerTurn((prevState) => prevState + 1);
-				socket.emit("playerTurn", props.playerTurn + 1);
+				socket.emit("newTurn", props.playerTurn + 1);
 			}
 		}
-
-		socket.emit("scoreChange", newState);
 	};
 
 	return (
@@ -74,7 +75,7 @@ const ScoreTable = (props) => {
 				sx={{ minWidth: "100%" }}
 			>
 				<TableHead>
-					<TableRow sx={{ backgroundColor: "primary" }}>
+					<TableRow sx={{ backgroundColor: "#757de8" }}>
 						<TableCell>Upper Section</TableCell>
 						{props.scoreCard.map((player, index) => {
 							return (

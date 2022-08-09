@@ -1,20 +1,21 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
 
 const Die = (props) => {
-	//let rolling = props.rotateDice && !props.locked;
 	const [rollingValue, setRollingValue] = useState(1);
+
 	useEffect(() => {
 		if (props.rotateDice && !props.locked) {
 			var count = 0;
 			const interval = setInterval(() => {
 				setRollingValue(Math.floor(Math.random() * 6) + 1);
-				console.log("setting value to:", rollingValue);
 				if (count >= 6) clearInterval(interval);
 				count++;
 			}, 500);
 		}
 	}, [props.rotateDice, !props.locked]);
+
 	return (
 		<Icon
 			className={props.rotateDice && !props.locked ? "rotate" : null}

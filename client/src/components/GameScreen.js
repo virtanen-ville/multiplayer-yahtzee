@@ -1,4 +1,5 @@
-import { useEffect, useState, useRef } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from "react";
 import * as calculateScores from "../utils/calculateScores";
 import Dice from "./Dice";
 import Throw from "./Throw";
@@ -135,28 +136,12 @@ const GameScreen = ({ players }) => {
 		//setDice(diceArray);
 	};
 
-	/*
-	const firstSetDice = () => {
-		let diceArray = [];
-
-		for (let i = 0; i < 5; i++) {
-			diceArray.push({
-				value: Math.floor(Math.random() * 6) + 1,
-				locked: false,
-			});
-		}
-		setDice(diceArray);
-		setThrowsLeft(2);
-	};
-	*/
-
 	useEffect(() => {
 		resetScoreCard();
 	}, []);
 
 	useEffect(() => {
 		calculateBonusScores();
-		//socket.emit("scoreChange", scoreCard);
 	}, [scoreCard]);
 
 	useEffect(() => {
@@ -169,10 +154,6 @@ const GameScreen = ({ players }) => {
 		resetScoreCard();
 	}, [players]);
 
-	// useEffect(() => {
-	// 	socket.emit("scoreChange", scoreCard);
-	// }, [scoreCard]);
-
 	useEffect(() => {
 		socket.on("newDice", (newDice) => {
 			setDice(newDice);
@@ -183,7 +164,7 @@ const GameScreen = ({ players }) => {
 		});
 
 		socket.on("newTurn", (newTurn) => {
-			setRounds(newTurn);
+			setPlayerTurn(newTurn);
 		});
 
 		socket.on("throwsLeft", (throwsLeft) => {
@@ -194,7 +175,6 @@ const GameScreen = ({ players }) => {
 		});
 
 		socket.on("newScoreCard", (newScoreCard) => {
-			console.log(newScoreCard);
 			setScoreCard(newScoreCard);
 		});
 

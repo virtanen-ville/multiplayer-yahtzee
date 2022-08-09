@@ -3,7 +3,6 @@ import * as React from "react";
 import Container from "@mui/material/Container";
 import { Button, Box } from "@mui/material";
 import PlayerDialog from "./components/PlayerDialog";
-import Chat from "./components/Chat";
 import MultiPlayerDialog from "./components/MultiPlayerDialog";
 import { useState, useEffect } from "react";
 import socket from "./utils/socket";
@@ -14,7 +13,7 @@ export default function App() {
 	const [isConnected, setIsConnected] = useState(socket.connected);
 
 	const [players, setPlayers] = useState([]);
-	const [dialogOpen, setDialogOpen] = useState(false); // Set this to true later
+	const [dialogOpen, setDialogOpen] = useState(false); // Set this to true later if we want to show the dialog for single computer
 	const [multiPlayerDialogOpen, setMultiPlayerDialogOpen] = useState(true);
 
 	useEffect(() => {
@@ -72,7 +71,6 @@ export default function App() {
 							New game
 						</Button>
 					</Box>
-					<Chat />
 				</Container>
 			</main>
 		</div>
