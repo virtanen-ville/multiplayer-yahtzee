@@ -10,6 +10,7 @@ import socket from "./utils/socket";
 import "./App.css";
 
 export default function App() {
+	// eslint-disable-next-line no-unused-vars
 	const [isConnected, setIsConnected] = useState(socket.connected);
 
 	const [players, setPlayers] = useState([]);
@@ -19,12 +20,12 @@ export default function App() {
 	useEffect(() => {
 		socket.on("connect", () => {
 			setIsConnected(true);
-			console.log(socket.id);
+			console.log("connected: ", socket.id);
 		});
 
 		socket.on("disconnect", () => {
 			setIsConnected(false);
-			console.log(socket.id);
+			console.log("discnnected: ", socket.id);
 		});
 
 		socket.on("newPlayer", (newPlayer) => {
@@ -62,6 +63,7 @@ export default function App() {
 							dialogOpen={multiPlayerDialogOpen}
 							setDialogOpen={setMultiPlayerDialogOpen}
 						/>
+						{/*
 						<Button
 							onClick={() => setDialogOpen(true)}
 							variant="outlined"
@@ -70,6 +72,7 @@ export default function App() {
 						>
 							New game
 						</Button>
+	*/}
 					</Box>
 				</Container>
 			</main>
