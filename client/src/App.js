@@ -1,7 +1,7 @@
 import GameScreen from "./components/GameScreen";
 import * as React from "react";
 import Container from "@mui/material/Container";
-import { Button, Box } from "@mui/material";
+import { Box } from "@mui/material";
 import PlayerDialog from "./components/PlayerDialog";
 import MultiPlayerDialog from "./components/MultiPlayerDialog";
 import { useState, useEffect } from "react";
