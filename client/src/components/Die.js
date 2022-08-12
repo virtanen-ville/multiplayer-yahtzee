@@ -2,11 +2,14 @@
 import { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
 
-const Die = (props) => {
-	const [rollingValue, setRollingValue] = useState(1);
+const Die = ({ value, locked, rotateDice }) => {
+	let rolling = rotateDice && !locked;
+	const [rollingValue, setRollingValue] = useState(
+		Math.floor(Math.random() * 6) + 1
+	);
 
 	useEffect(() => {
-		if (props.rotateDice && !props.locked) {
+		if (rolling) {
 			var count = 0;
 			const interval = setInterval(() => {
 				setRollingValue(Math.floor(Math.random() * 6) + 1);
@@ -14,18 +17,15 @@ const Die = (props) => {
 				count++;
 			}, 500);
 		}
-	}, [props.rotateDice, !props.locked]);
+	}, [rotateDice, locked]);
 
 	return (
 		<Icon
-			className={props.rotateDice && !props.locked ? "rotate" : null}
-			onClick={props.onClick}
+			className={rolling ? "rotate" : null}
 			inline
 			width="100"
-			color={`${props.locked ? "#ff6f60" : "#ab000d"}`}
-			icon={`mdi:dice-${
-				props.rotateDice && !props.locked ? rollingValue : props.value
-			}`}
+			color={`${locked ? "#ff6f60" : "#ab000d"}`}
+			icon={`mdi:dice-${rolling ? rollingValue : value}`}
 		/>
 	);
 };

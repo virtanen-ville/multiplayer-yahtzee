@@ -13,6 +13,7 @@ export default function PlayerDialog({
 	dialogOpen,
 	setDialogOpen,
 	setPlayers,
+	setPlayMode,
 }) {
 	const [player1, setPlayer1] = useState("");
 	const [player2, setPlayer2] = useState("");
@@ -41,6 +42,7 @@ export default function PlayerDialog({
 
 	const handleClose = () => {
 		setDialogOpen(false);
+		setPlayMode("");
 	};
 
 	return (

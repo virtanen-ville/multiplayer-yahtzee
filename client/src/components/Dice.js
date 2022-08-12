@@ -1,10 +1,12 @@
 import Die from "./Die";
+import { ButtonBase } from "@mui/material";
 import socket from "../utils/socket";
 
-const Dice = ({ dice, setDice, throwsLeft, rotateDice }) => {
+const Dice = ({ dice, setDice, throwsLeft, rotateDice, playMode }) => {
 	const lockDie = (index) => {
+		console.log("playMode: ", playMode);
+		console.log(dice);
 		if (throwsLeft > 0) {
-			//setDice((prevDice) => {
 			const newDice = dice.map((die, i) => {
 				if (i === index) {
 					return {
@@ -14,7 +16,13 @@ const Dice = ({ dice, setDice, throwsLeft, rotateDice }) => {
 				}
 				return die;
 			});
-			socket.emit("newDice", newDice);
+			if (playMode === "single") {
+				setDice(newDice);
+				console.log(dice);
+			} else if (playMode === "multi") {
+				socket.emit("newDice", newDice);
+				console.log(newDice);
+			}
 		}
 	};
 
@@ -25,14 +33,21 @@ const Dice = ({ dice, setDice, throwsLeft, rotateDice }) => {
 			) : (
 				<>
 					{dice.map((die, index) => (
-						<Die
+						<ButtonBase
+							onClick={() => {
+								console.log("index: ", index);
+								lockDie(index);
+							}}
 							key={index}
 							index={index}
-							value={die.value}
-							locked={die.locked}
-							onClick={() => lockDie(index)}
-							rotateDice={rotateDice}
-						/>
+							disableRipple
+						>
+							<Die
+								value={die.value}
+								locked={die.locked}
+								rotateDice={rotateDice}
+							/>
+						</ButtonBase>
 					))}
 				</>
 			)}

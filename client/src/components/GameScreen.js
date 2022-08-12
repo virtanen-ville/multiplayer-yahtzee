@@ -10,7 +10,7 @@ import { Box } from "@mui/system";
 
 import socket from "../utils/socket";
 
-const GameScreen = ({ players }) => {
+const GameScreen = ({ players, playMode }) => {
 	const [scoreCard, setScoreCard] = useState([]);
 	const [dice, setDice] = useState([]);
 	const [throwsLeft, setThrowsLeft] = useState(2);
@@ -97,29 +97,36 @@ const GameScreen = ({ players }) => {
 	};
 
 	const throwDice = () => {
-		setTimeout(() =>
-			//setDice((prevState) =>
-			{
-				const newState = dice.map((die) => {
-					if (!die.locked) {
-						return {
-							...die,
-							value: Math.floor(Math.random() * 6) + 1,
-						};
-					}
-					return die;
-				});
-				//return newState;
+		setTimeout(() => {
+			const newState = dice.map((die) => {
+				if (!die.locked) {
+					return {
+						...die,
+						value: Math.floor(Math.random() * 6) + 1,
+					};
+				}
+				return die;
+			});
+			if (playMode === "single") {
+				setDice(newState);
+				setRotateDice(false);
+			} else if (playMode === "multi") {
 				socket.emit("newDice", newState);
 				socket.emit("rotateDice", false);
-			}, 3000);
+			}
+		}, 3000);
 
-		if (throwsLeft > 0) {
-			socket.emit("throwsLeft", throwsLeft - 1);
-			//setThrowsLeft(throwsLeft - 1);
+		if (playMode === "single") {
+			if (throwsLeft > 0) {
+				setThrowsLeft(throwsLeft - 1);
+			}
+			setRotateDice(true);
+		} else if (playMode === "multi") {
+			if (throwsLeft > 0) {
+				socket.emit("throwsLeft", throwsLeft - 1);
+			}
+			socket.emit("rotateDice", true);
 		}
-		//setRotateDice(true);
-		socket.emit("rotateDice", true);
 	};
 
 	const resetDice = () => {
@@ -131,9 +138,11 @@ const GameScreen = ({ players }) => {
 				locked: false,
 			});
 		}
-		socket.emit("newDice", diceArray);
-
-		//setDice(diceArray);
+		if (playMode === "single") {
+			setDice(diceArray);
+		} else if (playMode === "multi") {
+			socket.emit("newDice", diceArray);
+		}
 	};
 
 	useEffect(() => {
@@ -178,6 +187,10 @@ const GameScreen = ({ players }) => {
 			setScoreCard(newScoreCard);
 		});
 
+		socket.on("roomJoined", (room) => {
+			console.log("Joined room: ", room);
+		});
+
 		return () => {
 			socket.off("connect");
 			socket.off("disconnect");
@@ -194,6 +207,7 @@ const GameScreen = ({ players }) => {
 				dice={dice}
 				setDice={setDice}
 				throwsLeft={throwsLeft}
+				playMode={playMode}
 			/>
 			<Throw throwsLeft={throwsLeft} throwDice={throwDice} />
 			<Turn players={players} playerTurn={playerTurn} rounds={rounds} />
@@ -210,6 +224,7 @@ const GameScreen = ({ players }) => {
 				setThrowsLeft={setThrowsLeft}
 				setRounds={setRounds}
 				rounds={rounds}
+				playMode={playMode}
 			/>
 			<TotalScores allScores={allScores} />
 		</Box>

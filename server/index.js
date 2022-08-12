@@ -5,8 +5,7 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import cors from "cors";
 
-//var players = [];
-let turn = 0;
+let roomTurns = {};
 
 dotenv.config();
 
@@ -23,18 +22,39 @@ const getUsernamesFromSockets = async () => {
 	let usernames = [];
 	const sockets = await io.fetchSockets();
 	for (let socket of sockets) {
-		console.log("ID: ", socket.id);
-		console.log("USERNAME: ", socket.data.username);
 		if (socket.data.username) {
 			usernames.push(socket.data.username);
 		}
 	}
-	console.log("usernames: ", usernames);
+	return usernames;
+};
+
+const getActiveRooms = () => {
+	const roomsArray = Array.from(io.sockets.adapter.rooms);
+
+	const filtered = roomsArray.filter((room) => !room[1].has(room[0]));
+
+	const roomNames = filtered.map((i) => i[0]);
+	return roomNames;
+};
+
+const getUsersInRoom = (room) => {
+	let users = [];
+	const userSet = io.sockets.adapter.rooms.get(room);
+	if (userSet) {
+		users = Array.from(userSet?.values());
+	}
+	let usernames = [];
+	for (let user of users) {
+		let socket = io.sockets.sockets.get(user);
+		if (socket.data?.username) {
+			usernames.push(socket.data.username);
+		}
+	}
 	return usernames;
 };
 
 io.on("connection", (socket) => {
-	//socket.join("room1");
 	console.log("socket ID: ", socket.id);
 
 	socket.on("disconnecting", (reason) => {
@@ -45,92 +65,74 @@ io.on("connection", (socket) => {
 		}
 	});
 
-	socket.on("playerSet", async (newPlayer) => {
-		//players.push(newPlayer);
+	socket.on("joinRoom", (room) => {
+		socket.join(room);
+		roomTurns[room] = 0;
+		socket.emit("roomJoined", room);
+		//io.emit("roomList", getActiveRooms());
+	});
+
+	socket.on("getRooms", () => {
+		socket.emit("roomList", getActiveRooms());
+	});
+
+	socket.on("playerSet", (newPlayer) => {
 		socket.data.username = newPlayer;
-		//console.log("newPlayers after push", players);
 
-		//io.emit("playerSet", socketIdsArray);
-
-		const players = await getUsernamesFromSockets();
-		console.log("players: ", players);
-		io.emit("playersArray", players);
+		let room = Array.from(socket.rooms)[1];
+		console.log(`users in room ${room}: `, getUsersInRoom(room));
+		io.to(room).emit("playersArray", getUsersInRoom(room));
 	});
 
-	socket.on("newScoreCard", async (newScoreCard) => {
-		const players = await getUsernamesFromSockets();
-		if (players[turn] === socket.data.username) {
-			io.emit("newScoreCard", newScoreCard);
+	socket.on("newScoreCard", (newScoreCard) => {
+		let room = Array.from(socket.rooms)[1];
+		const players = getUsersInRoom(room);
+		if (players[roomTurns[room]] === socket.data.username) {
+			io.to(room).emit("newScoreCard", newScoreCard);
 		}
-	});
-
-	socket.on("newDice", async (newDice) => {
-		const players = await getUsernamesFromSockets();
-		if (players[turn] === socket.data.username) {
-			io.emit("newDice", newDice);
-		}
-	});
-
-	socket.on("newRounds", async (newRounds) => {
-		const players = await getUsernamesFromSockets();
-		if (players[turn] === socket.data.username) {
-			io.emit("newRounds", newRounds);
-		}
-	});
-
-	socket.on("newTurn", async (newTurn) => {
-		const players = await getUsernamesFromSockets();
-		if (players[turn] === socket.data.username) {
-			turn = newTurn;
-			io.emit("newTurn", newTurn);
-		}
-	});
-
-	socket.on("throwsLeft", async (throwsLeft) => {
-		const players = await getUsernamesFromSockets();
-		if (players[turn] === socket.data.username) {
-			io.emit("throwsLeft", throwsLeft);
-		}
-	});
-
-	socket.on("rotateDice", async (rotateDice) => {
-		const players = await getUsernamesFromSockets();
-		if (players[turn] === socket.data.username) {
-			io.emit("rotateDice", rotateDice);
-		}
-	});
-
-	/*
-socket.on("playerSet", (newPlayer) => {
-		players.push(newPlayer);
-		console.log("newPlayers after push", players);
-		socket.broadcast.emit("playersArray", players);
-	});
-
-	socket.on("scoreChange", (newScoreCard) => {
-		socket.broadcast.emit("newScoreCard", newScoreCard);
 	});
 
 	socket.on("newDice", (newDice) => {
-		socket.broadcast.emit("newDice", newDice);
+		let room = Array.from(socket.rooms)[1];
+		const players = getUsersInRoom(room);
+		if (players[roomTurns[room]] === socket.data.username) {
+			io.to(room).emit("newDice", newDice);
+		}
 	});
 
 	socket.on("newRounds", (newRounds) => {
-		socket.broadcast.emit("newRounds", newRounds);
+		let room = Array.from(socket.rooms)[1];
+		const players = getUsersInRoom(room);
+		if (players[roomTurns[room]] === socket.data.username) {
+			io.to(room).emit("newRounds", newRounds);
+		}
 	});
 
 	socket.on("newTurn", (newTurn) => {
-		socket.broadcast.emit("newTurn", newTurn);
+		let room = Array.from(socket.rooms)[1];
+		const players = getUsersInRoom(room);
+		if (players[roomTurns[room]] === socket.data.username) {
+			roomTurns[room] = newTurn;
+			io.to(room).emit("newTurn", newTurn);
+		}
 	});
 
 	socket.on("throwsLeft", (throwsLeft) => {
-		socket.broadcast.emit("throwsLeft", throwsLeft);
+		let room = Array.from(socket.rooms)[1];
+		const players = getUsersInRoom(room);
+		if (players[roomTurns[room]] === socket.data.username) {
+			io.to(room).emit("throwsLeft", throwsLeft);
+		}
 	});
 
 	socket.on("rotateDice", (rotateDice) => {
-		socket.broadcast.emit("rotateDice", rotateDice);
+		let room = Array.from(socket.rooms)[1];
+
+		const players = getUsersInRoom(room);
+		if (players[roomTurns[room]] === socket.data.username) {
+			io.to(room).emit("rotateDice", rotateDice);
+		}
 	});
-*/
 });
 
 httpServer.listen(process.env.PORT || 8999, () => {

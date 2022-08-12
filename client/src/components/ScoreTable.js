@@ -18,9 +18,8 @@ const ScoreTable = (props) => {
 	const handleClick = (e, name, playerName) => {
 		e.preventDefault();
 
-		// TODO: This is ugly and not good state management. Fix when you have time
-		//let newScoreCard = [...props.scoreCard];
-		//props.setScoreCard((prevState) => {
+		// TODO: This is probably not good state management. Fix when you have time (Redux or similar)
+
 		const newState = props.scoreCard.map((player) => {
 			if (player.playerName === playerName) {
 				return {
@@ -39,31 +38,35 @@ const ScoreTable = (props) => {
 			}
 			return player;
 		});
-		//return newState;
-		//});
 
 		if (
 			props.scoreCard
 				.find((player) => player.playerName === playerName)
 				.scores.find((score) => score.name === name && !score.isFilled)
 		) {
-			props.resetDice();
-			//props.setThrowsLeft(2);
-			socket.emit("throwsLeft", 2);
+			if (props.playMode === "single") {
+				props.setThrowsLeft(2);
+				props.setRounds((prevState) => prevState - 1);
+				props.setScoreCard(newState);
 
-			//props.setRounds((prevState) => prevState - 1);
-			socket.emit("newRounds", props.rounds - 1);
+				if (props.playerTurn === props.players.length - 1) {
+					props.setPlayerTurn(0);
+				} else {
+					props.setPlayerTurn((prevState) => prevState + 1);
+				}
+			} else if (props.playMode === "multi") {
+				socket.emit("throwsLeft", 2);
+				socket.emit("newRounds", props.rounds - 1);
+				socket.emit("newScoreCard", newState);
 
-			socket.emit("newScoreCard", newState);
-
-			// Be sure to set the turn last so that the server can know that the player has finished
-			if (props.playerTurn === props.players.length - 1) {
-				//props.setPlayerTurn(0);
-				socket.emit("newTurn", 0);
-			} else {
-				//props.setPlayerTurn((prevState) => prevState + 1);
-				socket.emit("newTurn", props.playerTurn + 1);
+				// Be sure to set the turn last so that the server knows that the player has finished but lets the other changes happen first.
+				if (props.playerTurn === props.players.length - 1) {
+					socket.emit("newTurn", 0);
+				} else {
+					socket.emit("newTurn", props.playerTurn + 1);
+				}
 			}
+			props.resetDice();
 		}
 	};
 
