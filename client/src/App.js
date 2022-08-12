@@ -86,16 +86,6 @@ export default function App() {
 							setPlayMode={setPlayMode}
 							playMode={playMode}
 						/>
-						{/*
-						<Button
-							onClick={() => setDialogOpen(true)}
-							variant="outlined"
-							color="primary"
-							sx={{ margin: "1rem" }}
-						>
-							New game
-						</Button>
-	*/}
 					</Box>
 				</Container>
 			</main>
