@@ -78,10 +78,14 @@ io.on("connection", (socket) => {
 
 	socket.on("playerSet", (newPlayer) => {
 		socket.data.username = newPlayer;
-
 		let room = Array.from(socket.rooms)[1];
 		console.log(`users in room ${room}: `, getUsersInRoom(room));
 		io.to(room).emit("playersArray", getUsersInRoom(room));
+	});
+
+	socket.on("sendMessage", (message) => {
+		let room = Array.from(socket.rooms)[1];
+		io.to(room).emit("message", message, socket.data.username);
 	});
 
 	socket.on("newScoreCard", (newScoreCard) => {
@@ -127,12 +131,23 @@ io.on("connection", (socket) => {
 
 	socket.on("rotateDice", (rotateDice) => {
 		let room = Array.from(socket.rooms)[1];
-
 		const players = getUsersInRoom(room);
 		if (players[roomTurns[room]] === socket.data.username) {
 			io.to(room).emit("rotateDice", rotateDice);
 		}
 	});
+
+	socket.on("leaveRoom", () => {
+		let room = Array.from(socket.rooms)[1];
+		socket.leave(room);
+		socket.emit("leftRoom", room);
+	});
+});
+
+io.of("/").adapter.on("delete-room", (room) => {
+	delete roomTurns.room;
+	//roomTurns[room] = 0;
+	console.log(`room ${room} was deleted`);
 });
 
 httpServer.listen(process.env.PORT || 8999, () => {

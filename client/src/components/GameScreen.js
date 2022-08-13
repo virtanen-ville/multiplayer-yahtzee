@@ -10,14 +10,13 @@ import { Box } from "@mui/system";
 
 import socket from "../utils/socket";
 
-const GameScreen = ({ players, playMode }) => {
+const GameScreen = ({ players, playMode, rounds, setRounds }) => {
 	const [scoreCard, setScoreCard] = useState([]);
 	const [dice, setDice] = useState([]);
 	const [throwsLeft, setThrowsLeft] = useState(2);
 	const [playerTurn, setPlayerTurn] = useState(0);
 	const [bonusScores, setBonusScores] = useState([]);
 	const [allScores, setAllScores] = useState([]);
-	const [rounds, setRounds] = useState(15);
 	const [rotateDice, setRotateDice] = useState(false);
 
 	const scoreRows = [
@@ -201,7 +200,7 @@ const GameScreen = ({ players, playMode }) => {
 	}, []);
 
 	return (
-		<Box sx={{ textAlign: "center" }}>
+		<Box sx={{ textAlign: "center", flexGrow: 3 }}>
 			<Dice
 				rotateDice={rotateDice}
 				dice={dice}

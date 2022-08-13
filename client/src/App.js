@@ -1,11 +1,12 @@
 import GameScreen from "./components/GameScreen";
 import * as React from "react";
 import Container from "@mui/material/Container";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import PlayerDialog from "./components/PlayerDialog";
 import MultiPlayerDialog from "./components/MultiPlayerDialog";
 import SingleVsMultiDialog from "./components/SingleVsMultiDialog";
 import { useState, useEffect } from "react";
+import Chat from "./components/Chat";
 import socket from "./utils/socket";
 
 import "./App.css";
@@ -13,6 +14,9 @@ import "./App.css";
 export default function App() {
 	// eslint-disable-next-line no-unused-vars
 	const [isConnected, setIsConnected] = useState(socket.connected);
+	const [rounds, setRounds] = useState(15);
+
+	//const [gameOver, setGameOver] = useState(false)
 	const [playMode, setPlayMode] = useState("");
 	const [playModeDialogOpen, setPlayModeDialogOpen] = useState(true);
 	const [players, setPlayers] = useState([]);
@@ -58,37 +62,61 @@ export default function App() {
 	}, [playMode]);
 
 	return (
-		<div>
-			<main>
-				<Container maxWidth="md">
-					<Box sx={{ my: 4, textAlign: "center" }}>
-						<GameScreen players={players} playMode={playMode} />
-						<SingleVsMultiDialog
-							dialogOpen={playModeDialogOpen}
-							setDialogOpen={setPlayModeDialogOpen}
-							setPlayMode={setPlayMode}
-							playMode={playMode}
-						/>
-
-						<PlayerDialog
-							players={players}
-							setPlayers={setPlayers}
-							dialogOpen={dialogOpen}
-							setDialogOpen={setDialogOpen}
-							setPlayMode={setPlayMode}
-							playMode={playMode}
-						/>
-						<MultiPlayerDialog
-							players={players}
-							setPlayers={setPlayers}
-							dialogOpen={multiPlayerDialogOpen}
-							setDialogOpen={setMultiPlayerDialogOpen}
-							setPlayMode={setPlayMode}
-							playMode={playMode}
-						/>
-					</Box>
-				</Container>
-			</main>
-		</div>
+		<Container maxWidth="md">
+			<Box sx={{ my: 4, textAlign: "center" }}>
+				<Box sx={{ display: "flex" }}>
+					<GameScreen
+						players={players}
+						playMode={playMode}
+						rounds={rounds}
+						setRounds={setRounds}
+					/>
+					{playMode === "multi" ? <Chat /> : null}
+				</Box>
+				<SingleVsMultiDialog
+					dialogOpen={playModeDialogOpen}
+					setDialogOpen={setPlayModeDialogOpen}
+					setPlayMode={setPlayMode}
+					playMode={playMode}
+				/>
+				<PlayerDialog
+					players={players}
+					setPlayers={setPlayers}
+					dialogOpen={dialogOpen}
+					setDialogOpen={setDialogOpen}
+					setPlayMode={setPlayMode}
+					playMode={playMode}
+				/>
+				<MultiPlayerDialog
+					dialogOpen={multiPlayerDialogOpen}
+					setDialogOpen={setMultiPlayerDialogOpen}
+					setPlayMode={setPlayMode}
+					playMode={playMode}
+				/>
+				<Button
+					sx={{ margin: 1 }}
+					variant="contained"
+					color="secondary"
+					onClick={() => {
+						socket.emit("leaveRoom");
+						setPlayMode("");
+						setPlayers([]);
+					}}
+				>
+					Leave Room
+				</Button>
+				<Button
+					sx={{ margin: 1 }}
+					variant="contained"
+					color="primary"
+					disabled={rounds > 0}
+					onClick={() => {
+						console.log("Start a new Game");
+					}}
+				>
+					Start New Game
+				</Button>
+			</Box>
+		</Container>
 	);
 }

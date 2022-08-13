@@ -19,8 +19,6 @@ import socket from "../utils/socket";
 export default function MultiPlayerDialog({
 	dialogOpen,
 	setDialogOpen,
-	setPlayers,
-	players,
 	setPlayMode,
 	playMode,
 }) {
