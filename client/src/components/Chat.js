@@ -65,18 +65,16 @@ const Chat = () => {
 				}}
 			>
 				{chatMessages.map((message, index) => (
-					<React.Fragment>
-						<ListItem
-							divider
-							dense
-							key={index} //alignItems="flex-start"
-						>
-							<ListItemText
-								primary={message.sender}
-								secondary={message.message}
-							/>
-						</ListItem>
-					</React.Fragment>
+					<ListItem
+						divider
+						dense
+						key={index} //alignItems="flex-start"
+					>
+						<ListItemText
+							primary={message.sender}
+							secondary={message.message}
+						/>
+					</ListItem>
 				))}
 			</List>
 		</Box>

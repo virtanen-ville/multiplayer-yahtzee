@@ -15,8 +15,9 @@ import * as calculateScores from "../utils/calculateScores";
 import socket from "../utils/socket";
 
 const ScoreTable = (props) => {
-	const handleClick = (e, name, playerName) => {
-		e.preventDefault();
+	// Handle click on score table row.
+	const handleClick = (name, playerName) => {
+		//e.preventDefault();
 
 		// TODO: This is probably not good state management. Fix when you have time (Redux or similar)
 
@@ -45,6 +46,7 @@ const ScoreTable = (props) => {
 				.scores.find((score) => score.name === name && !score.isFilled)
 		) {
 			if (props.playMode === "single") {
+				props.resetDice();
 				props.setThrowsLeft(2);
 				props.setRounds((prevState) => prevState - 1);
 				props.setScoreCard(newState);
@@ -55,6 +57,7 @@ const ScoreTable = (props) => {
 					props.setPlayerTurn((prevState) => prevState + 1);
 				}
 			} else if (props.playMode === "multi") {
+				props.resetDice();
 				socket.emit("throwsLeft", 2);
 				socket.emit("newRounds", props.rounds - 1);
 				socket.emit("newScoreCard", newState);
@@ -66,7 +69,6 @@ const ScoreTable = (props) => {
 					socket.emit("newTurn", props.playerTurn + 1);
 				}
 			}
-			props.resetDice();
 		}
 	};
 

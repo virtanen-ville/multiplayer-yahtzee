@@ -137,10 +137,12 @@ const GameScreen = ({ players, playMode, rounds, setRounds }) => {
 				locked: false,
 			});
 		}
+		console.log("playMode in resetDice", playMode);
 		if (playMode === "single") {
 			setDice(diceArray);
 		} else if (playMode === "multi") {
 			socket.emit("newDice", diceArray);
+			console.log("emitting newDice");
 		}
 	};
 

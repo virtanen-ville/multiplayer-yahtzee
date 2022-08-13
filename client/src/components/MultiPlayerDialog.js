@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import { useState, useEffect } from "react";
 import {
 	Button,
@@ -22,11 +24,11 @@ export default function MultiPlayerDialog({
 	setPlayMode,
 	playMode,
 }) {
-	let defaultRooms = ["Room 1", "Room 2"];
+	//let defaultRooms = ["Room 1", "Room 2"];
 	const [roomToJoin, setRoomToJoin] = useState("");
 	const [newRoom, setNewRoom] = useState("");
 	const [newPlayer, setNewPlayer] = useState("");
-	const [roomList, setRoomList] = useState(defaultRooms);
+	const [roomList, setRoomList] = useState([]);
 	const [showTextfield, setShowTextfield] = useState(false);
 	const handleChange = (event) => {
 		if (event.target.value === "new") {
@@ -60,7 +62,7 @@ export default function MultiPlayerDialog({
 	useEffect(() => {
 		socket.on("roomList", (roomList) => {
 			console.log("roomList: ", roomList);
-			setRoomList([...defaultRooms, ...roomList]);
+			setRoomList(roomList);
 		});
 
 		return () => {

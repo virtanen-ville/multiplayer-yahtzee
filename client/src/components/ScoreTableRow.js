@@ -20,9 +20,8 @@ const ScoreTableRow = (props) => {
 						key={index}
 					>
 						<ButtonBase
-							onClick={(event) =>
+							onClick={() =>
 								props.handleClick(
-									event,
 									props.rowNameSmall,
 									player.playerName
 								)
