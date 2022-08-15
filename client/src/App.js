@@ -1,7 +1,7 @@
 import GameScreen from "./components/GameScreen";
 import * as React from "react";
 import Container from "@mui/material/Container";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import PlayerDialog from "./components/PlayerDialog";
 import MultiPlayerDialog from "./components/MultiPlayerDialog";
 import SingleVsMultiDialog from "./components/SingleVsMultiDialog";
@@ -14,14 +14,12 @@ import "./App.css";
 export default function App() {
 	// eslint-disable-next-line no-unused-vars
 	const [isConnected, setIsConnected] = useState(socket.connected);
-	const [rounds, setRounds] = useState(15);
-
-	//const [gameOver, setGameOver] = useState(false)
 	const [playMode, setPlayMode] = useState("");
 	const [playModeDialogOpen, setPlayModeDialogOpen] = useState(true);
 	const [players, setPlayers] = useState([]);
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const [multiPlayerDialogOpen, setMultiPlayerDialogOpen] = useState(false);
+	const [roomName, setRoomName] = useState("");
 
 	useEffect(() => {
 		socket.on("connect", () => {
@@ -34,10 +32,6 @@ export default function App() {
 			console.log("discnnected: ", socket.id);
 		});
 
-		socket.on("newPlayer", (newPlayer) => {
-			setPlayers((prevState) => [...prevState, newPlayer]);
-		});
-
 		socket.on("playersArray", (newPlayers) => {
 			setPlayers(newPlayers);
 		});
@@ -45,9 +39,7 @@ export default function App() {
 		return () => {
 			socket.off("connect");
 			socket.off("disconnect");
-			socket.off("firstConnection");
-			socket.off("playerSet");
-			socket.off("dieThrow");
+			socket.off("playersArray");
 		};
 	}, []);
 
@@ -68,10 +60,14 @@ export default function App() {
 					<GameScreen
 						players={players}
 						playMode={playMode}
-						rounds={rounds}
-						setRounds={setRounds}
+						setPlayMode={setPlayMode}
+						setPlayers={setPlayers}
+						setRoomName={setRoomName}
+						roomName={roomName}
 					/>
-					{playMode === "multi" ? <Chat /> : null}
+					{playMode === "multi" ? (
+						<Chat setRoomName={setRoomName} roomName={roomName} />
+					) : null}
 				</Box>
 				<SingleVsMultiDialog
 					dialogOpen={playModeDialogOpen}
@@ -93,29 +89,6 @@ export default function App() {
 					setPlayMode={setPlayMode}
 					playMode={playMode}
 				/>
-				<Button
-					sx={{ margin: 1 }}
-					variant="contained"
-					color="secondary"
-					onClick={() => {
-						socket.emit("leaveRoom");
-						setPlayMode("");
-						setPlayers([]);
-					}}
-				>
-					Leave Room
-				</Button>
-				<Button
-					sx={{ margin: 1 }}
-					variant="contained"
-					color="primary"
-					disabled={rounds > 0}
-					onClick={() => {
-						console.log("Start a new Game");
-					}}
-				>
-					Start New Game
-				</Button>
 			</Box>
 		</Container>
 	);

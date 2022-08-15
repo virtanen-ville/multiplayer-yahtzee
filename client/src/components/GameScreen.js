@@ -2,15 +2,21 @@
 import { useEffect, useState } from "react";
 import * as calculateScores from "../utils/calculateScores";
 import Dice from "./Dice";
-import Throw from "./Throw";
 import ScoreTable from "./ScoreTable";
 import TotalScores from "./TotalScores";
 import Turn from "./Turn";
-import { Box } from "@mui/system";
+import { Box, Button, Alert, AlertTitle, Backdrop } from "@mui/material";
 
 import socket from "../utils/socket";
 
-const GameScreen = ({ players, playMode, rounds, setRounds }) => {
+const GameScreen = ({
+	players,
+	playMode,
+	setPlayMode,
+	setPlayers,
+	roomName,
+	setRoomName,
+}) => {
 	const [scoreCard, setScoreCard] = useState([]);
 	const [dice, setDice] = useState([]);
 	const [throwsLeft, setThrowsLeft] = useState(2);
@@ -18,6 +24,8 @@ const GameScreen = ({ players, playMode, rounds, setRounds }) => {
 	const [bonusScores, setBonusScores] = useState([]);
 	const [allScores, setAllScores] = useState([]);
 	const [rotateDice, setRotateDice] = useState(false);
+	const [rounds, setRounds] = useState(15);
+	const [alertOn, setAlertOn] = useState(false);
 
 	const scoreRows = [
 		"ones",
@@ -116,34 +124,58 @@ const GameScreen = ({ players, playMode, rounds, setRounds }) => {
 		}, 3000);
 
 		if (playMode === "single") {
-			if (throwsLeft > 0) {
-				setThrowsLeft(throwsLeft - 1);
-			}
 			setRotateDice(true);
 		} else if (playMode === "multi") {
-			if (throwsLeft > 0) {
-				socket.emit("throwsLeft", throwsLeft - 1);
-			}
 			socket.emit("rotateDice", true);
 		}
 	};
 
-	const resetDice = () => {
-		let diceArray = [];
+	const calculateThrowsLeft = () => {
+		if (throwsLeft <= 0) return;
 
+		if (playMode === "single") {
+			setThrowsLeft(throwsLeft - 1);
+		} else if (playMode === "multi") {
+			socket.emit("throwsLeft", throwsLeft - 1);
+		}
+	};
+
+	const resetDice = () => {
+		let newDiceArray = [];
 		for (let i = 0; i < 5; i++) {
-			diceArray.push({
+			newDiceArray.push({
 				value: Math.floor(Math.random() * 6) + 1,
 				locked: false,
 			});
 		}
-		console.log("playMode in resetDice", playMode);
+
+		const unlockedState = dice.map((die) => {
+			if (die.locked) {
+				return {
+					...die,
+					locked: false,
+				};
+			}
+			return die;
+		});
+
 		if (playMode === "single") {
-			setDice(diceArray);
+			setDice(unlockedState);
+			setRotateDice(true);
 		} else if (playMode === "multi") {
-			socket.emit("newDice", diceArray);
-			console.log("emitting newDice");
+			socket.emit("newDice", unlockedState);
+			socket.emit("rotateDice", true);
 		}
+
+		setTimeout(() => {
+			if (playMode === "single") {
+				setDice(newDiceArray);
+				setRotateDice(false);
+			} else if (playMode === "multi") {
+				socket.emit("newDice", newDiceArray);
+				socket.emit("rotateDice", false);
+			}
+		}, 3000);
 	};
 
 	useEffect(() => {
@@ -159,8 +191,15 @@ const GameScreen = ({ players, playMode, rounds, setRounds }) => {
 	}, [scoreCard, bonusScores]);
 
 	useEffect(() => {
+		let newDiceArray = [];
+		for (let i = 0; i < 5; i++) {
+			newDiceArray.push({
+				value: Math.floor(Math.random() * 6) + 1,
+				locked: false,
+			});
+		}
+		setDice(newDiceArray);
 		setRounds(15 * players.length);
-		resetDice();
 		resetScoreCard();
 	}, [players]);
 
@@ -189,20 +228,37 @@ const GameScreen = ({ players, playMode, rounds, setRounds }) => {
 		});
 
 		socket.on("roomJoined", (room) => {
+			setRoomName(room);
+			setAlertOn(true);
 			console.log("Joined room: ", room);
 		});
 
 		return () => {
-			socket.off("connect");
-			socket.off("disconnect");
-			socket.off("firstConnection");
-			socket.off("playerSet");
-			socket.off("dieThrow");
+			socket.off("newDice");
+			socket.off("newRounds");
+			socket.off("newTurn");
+			socket.off("throwsLeft");
+			socket.off("rotateDice");
+			socket.off("newScoreCard");
+			socket.off("roomJoined");
 		};
 	}, []);
 
 	return (
 		<Box sx={{ textAlign: "center", flexGrow: 3 }}>
+			<Backdrop
+				sx={{
+					color: "#fff",
+					zIndex: (theme) => theme.zIndex.drawer + 1,
+				}}
+				open={alertOn}
+				onClick={() => setAlertOn(false)}
+			>
+				<Alert severity="success">
+					<AlertTitle>Success</AlertTitle>
+					You have joined room: <strong>{roomName}</strong>
+				</Alert>
+			</Backdrop>
 			<Dice
 				rotateDice={rotateDice}
 				dice={dice}
@@ -210,8 +266,29 @@ const GameScreen = ({ players, playMode, rounds, setRounds }) => {
 				throwsLeft={throwsLeft}
 				playMode={playMode}
 			/>
-			<Throw throwsLeft={throwsLeft} throwDice={throwDice} />
-			<Turn players={players} playerTurn={playerTurn} rounds={rounds} />
+
+			<Button
+				disabled={throwsLeft > 0 ? false : true}
+				sx={{
+					display: "block",
+					marginY: "10px",
+					marginX: "auto",
+				}}
+				variant="contained"
+				size="large"
+				onClick={() => {
+					throwDice();
+					calculateThrowsLeft();
+				}}
+			>
+				Throw
+			</Button>
+			<Turn
+				players={players}
+				playerTurn={playerTurn}
+				rounds={rounds}
+				throwsLeft={throwsLeft}
+			/>
 			<ScoreTable
 				players={players}
 				scoreCard={scoreCard}
@@ -226,8 +303,37 @@ const GameScreen = ({ players, playMode, rounds, setRounds }) => {
 				setRounds={setRounds}
 				rounds={rounds}
 				playMode={playMode}
+				throwDice={throwDice}
 			/>
 			<TotalScores allScores={allScores} />
+			{playMode === "single" ? null : (
+				<Button
+					sx={{ margin: 1 }}
+					variant="contained"
+					color="secondary"
+					onClick={() => {
+						socket.emit("leaveRoom");
+						setPlayMode("");
+						setPlayers([]);
+					}}
+				>
+					Leave Room
+				</Button>
+			)}
+			<Button
+				sx={{ margin: 1 }}
+				variant="contained"
+				color="primary"
+				disabled={rounds > 0}
+				onClick={() => {
+					console.log("Start a new Game");
+					setRounds(15 * players.length);
+					resetDice();
+					resetScoreCard();
+				}}
+			>
+				Start New Game
+			</Button>
 		</Box>
 	);
 };

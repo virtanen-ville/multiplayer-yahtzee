@@ -4,7 +4,6 @@ import {
 	DialogContent,
 	DialogContentText,
 	DialogTitle,
-	Backdrop,
 } from "@mui/material";
 import socket from "../utils/socket";
 
@@ -27,38 +26,34 @@ export default function SingleVsMultiDialog({
 	};
 
 	return (
-		<Backdrop
-			open={dialogOpen} //onClick={handleClose}
-		>
-			<Dialog open={dialogOpen} onClose={handleClose}>
-				<DialogTitle>Single or Multi computer</DialogTitle>
-				<DialogContent>
-					<DialogContentText>
-						Single mode has 1-4 players on single computer. In multi
-						mode you can play over the web against others.
-					</DialogContentText>
-				</DialogContent>
-				<Button
-					sx={{
-						marginX: 2,
-					}}
-					onClick={() => handleClickSubmit("single")}
-					variant="contained"
-					color="primary"
-				>
-					Single Computer
-				</Button>
-				<Button
-					sx={{
-						margin: 2,
-					}}
-					onClick={() => handleClickSubmit("multi")}
-					variant="contained"
-					color="primary"
-				>
-					Multi Computer
-				</Button>
-			</Dialog>
-		</Backdrop>
+		<Dialog open={dialogOpen} onClose={handleClose}>
+			<DialogTitle>Single or Multi computer</DialogTitle>
+			<DialogContent>
+				<DialogContentText>
+					Single mode has 1-4 players on single computer. In multi
+					mode you can play over the web against others.
+				</DialogContentText>
+			</DialogContent>
+			<Button
+				sx={{
+					marginX: 2,
+				}}
+				onClick={() => handleClickSubmit("single")}
+				variant="contained"
+				color="primary"
+			>
+				Single Computer
+			</Button>
+			<Button
+				sx={{
+					margin: 2,
+				}}
+				onClick={() => handleClickSubmit("multi")}
+				variant="contained"
+				color="primary"
+			>
+				Multi Computer
+			</Button>
+		</Dialog>
 	);
 }

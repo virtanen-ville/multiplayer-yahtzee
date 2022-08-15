@@ -69,7 +69,7 @@ io.on("connection", (socket) => {
 		socket.join(room);
 		roomTurns[room] = 0;
 		socket.emit("roomJoined", room);
-		//io.emit("roomList", getActiveRooms());
+		io.emit("roomList", getActiveRooms());
 	});
 
 	socket.on("getRooms", () => {

@@ -8,12 +8,13 @@ import {
 	IconButton,
 	Box,
 	TextField,
+	Typography,
 } from "@mui/material";
 import { Icon } from "@iconify/react";
 
 import socket from "../utils/socket";
 
-const Chat = () => {
+const Chat = ({ roomName, setRoomName }) => {
 	const [chatMessages, setChatMessages] = useState([]);
 	const [newMessage, setNewMessage] = useState("");
 
@@ -32,6 +33,9 @@ const Chat = () => {
 
 	return (
 		<Box sx={{ display: "inline-block", flexGrow: 1 }}>
+			<Typography variant="body1" color="initial">
+				Room: {roomName} Chat
+			</Typography>
 			<TextField
 				margin="dense"
 				id="newMessage"
@@ -65,11 +69,7 @@ const Chat = () => {
 				}}
 			>
 				{chatMessages.map((message, index) => (
-					<ListItem
-						divider
-						dense
-						key={index} //alignItems="flex-start"
-					>
+					<ListItem divider dense key={index}>
 						<ListItemText
 							primary={message.sender}
 							secondary={message.message}

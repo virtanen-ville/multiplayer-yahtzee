@@ -17,8 +17,6 @@ import socket from "../utils/socket";
 const ScoreTable = (props) => {
 	// Handle click on score table row.
 	const handleClick = (name, playerName) => {
-		//e.preventDefault();
-
 		// TODO: This is probably not good state management. Fix when you have time (Redux or similar)
 
 		const newState = props.scoreCard.map((player) => {
