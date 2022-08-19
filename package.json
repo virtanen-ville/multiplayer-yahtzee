@@ -6,7 +6,11 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "npm test",
-		"start": "npx nodemon index.ts"
+		"start": "npx nodemon index.ts",
+		"build": "npm install"
+	},
+	"engines": {
+		"node": "16.x"
 	},
 	"author": "Ville Virtanen",
 	"license": "ISC",
