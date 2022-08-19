@@ -21,6 +21,7 @@
 	"devDependencies": {
 		"@iconify/react": "^3.2.2"
 	},
+	"proxy": "http://127.0.0.1:8999",
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "react-scripts build",
