@@ -6,23 +6,24 @@ const Dice = ({ dice, setDice, throwsLeft, rotateDice, playMode }) => {
 	const lockDie = (index) => {
 		console.log("playMode: ", playMode);
 		console.log(dice);
-		if (throwsLeft > 0) {
-			const newDice = dice.map((die, i) => {
-				if (i === index) {
-					return {
-						...die,
-						locked: !die.locked,
-					};
-				}
-				return die;
-			});
-			if (playMode === "single") {
-				setDice(newDice);
-				console.log(dice);
-			} else if (playMode === "multi") {
-				socket.emit("newDice", newDice);
-				console.log(newDice);
+		if (throwsLeft <= 0 || throwsLeft >= 3) {
+			return;
+		}
+		const newDice = dice.map((die, i) => {
+			if (i === index) {
+				return {
+					...die,
+					locked: !die.locked,
+				};
 			}
+			return die;
+		});
+		if (playMode === "single") {
+			setDice(newDice);
+			console.log(dice);
+		} else if (playMode === "multi") {
+			socket.emit("newDice", newDice);
+			console.log(newDice);
 		}
 	};
 

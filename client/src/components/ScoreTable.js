@@ -45,7 +45,7 @@ const ScoreTable = (props) => {
 		) {
 			if (props.playMode === "single") {
 				props.resetDice();
-				props.setThrowsLeft(2);
+				props.setThrowsLeft(3);
 				props.setRounds((prevState) => prevState - 1);
 				props.setScoreCard(newState);
 
@@ -56,7 +56,7 @@ const ScoreTable = (props) => {
 				}
 			} else if (props.playMode === "multi") {
 				props.resetDice();
-				socket.emit("throwsLeft", 2);
+				socket.emit("throwsLeft", 3);
 				socket.emit("newRounds", props.rounds - 1);
 				socket.emit("newScoreCard", newState);
 

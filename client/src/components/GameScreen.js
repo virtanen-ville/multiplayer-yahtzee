@@ -19,7 +19,7 @@ const GameScreen = ({
 }) => {
 	const [scoreCard, setScoreCard] = useState([]);
 	const [dice, setDice] = useState([]);
-	const [throwsLeft, setThrowsLeft] = useState(2);
+	const [throwsLeft, setThrowsLeft] = useState(3);
 	const [playerTurn, setPlayerTurn] = useState(0);
 	const [bonusScores, setBonusScores] = useState([]);
 	const [allScores, setAllScores] = useState([]);
@@ -104,16 +104,23 @@ const GameScreen = ({
 	};
 
 	const throwDice = () => {
+		const newState = dice.map((die) => {
+			if (!die.locked) {
+				return {
+					...die,
+					value: Math.floor(Math.random() * 6) + 1,
+				};
+			}
+			return die;
+		});
+
+		if (playMode === "single") {
+			setRotateDice(true);
+		} else if (playMode === "multi") {
+			socket.emit("rotateDice", true);
+		}
+
 		setTimeout(() => {
-			const newState = dice.map((die) => {
-				if (!die.locked) {
-					return {
-						...die,
-						value: Math.floor(Math.random() * 6) + 1,
-					};
-				}
-				return die;
-			});
 			if (playMode === "single") {
 				setDice(newState);
 				setRotateDice(false);
@@ -122,12 +129,6 @@ const GameScreen = ({
 				socket.emit("rotateDice", false);
 			}
 		}, 3000);
-
-		if (playMode === "single") {
-			setRotateDice(true);
-		} else if (playMode === "multi") {
-			socket.emit("rotateDice", true);
-		}
 	};
 
 	const calculateThrowsLeft = () => {
@@ -141,6 +142,7 @@ const GameScreen = ({
 	};
 
 	const resetDice = () => {
+		/*
 		let newDiceArray = [];
 		for (let i = 0; i < 5; i++) {
 			newDiceArray.push({
@@ -148,6 +150,8 @@ const GameScreen = ({
 				locked: false,
 			});
 		}
+
+		*/
 
 		const unlockedState = dice.map((die) => {
 			if (die.locked) {
@@ -161,11 +165,18 @@ const GameScreen = ({
 
 		if (playMode === "single") {
 			setDice(unlockedState);
+		} else if (playMode === "multi") {
+			socket.emit("newDice", unlockedState);
+		}
+		/*
+if (playMode === "single") {
+			setDice(unlockedState);
 			setRotateDice(true);
 		} else if (playMode === "multi") {
 			socket.emit("newDice", unlockedState);
 			socket.emit("rotateDice", true);
 		}
+
 
 		setTimeout(() => {
 			if (playMode === "single") {
@@ -176,6 +187,7 @@ const GameScreen = ({
 				socket.emit("rotateDice", false);
 			}
 		}, 3000);
+		*/
 	};
 
 	useEffect(() => {
@@ -194,7 +206,7 @@ const GameScreen = ({
 		let newDiceArray = [];
 		for (let i = 0; i < 5; i++) {
 			newDiceArray.push({
-				value: Math.floor(Math.random() * 6) + 1,
+				value: 1, //Math.floor(Math.random() * 6) + 1,
 				locked: false,
 			});
 		}
