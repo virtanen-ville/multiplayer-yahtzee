@@ -106,6 +106,7 @@ apiAuthRouter.get(
 			let newToken = createToken(user); // Payload is user._id and user.username
 			res.send({ token: newToken, userInfo: userInfo });
 		} catch (e: any) {
+			console.log(e);
 			next(new CustomError(401, "Invalid token"));
 		}
 	}

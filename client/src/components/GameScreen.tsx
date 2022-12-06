@@ -112,13 +112,19 @@ const GameScreen = ({ guestName, setGameoverDialogOpen }: any) => {
 	// Check if the token is about to expire (every time when the scores change)
 	useEffect(() => {
 		let token = localStorage.getItem("token");
-		let decoded = jwt_decode<CustomJwtPayload>(token as string);
-		if (!decoded.exp) return;
-		if (
-			decoded.exp * 1000 < Date.now() + 1000 * 60 * 10 &&
-			!dismissPressed
-		) {
-			setLogOutAlert(true);
+		if (!token) return;
+		try {
+			let decoded = jwt_decode<CustomJwtPayload>(token as string);
+
+			if (!decoded.exp) return;
+			if (
+				decoded.exp * 1000 < Date.now() + 1000 * 60 * 10 &&
+				!dismissPressed
+			) {
+				setLogOutAlert(true);
+			}
+		} catch (err) {
+			console.log(err);
 		}
 	}, [dismissPressed, scores]);
 

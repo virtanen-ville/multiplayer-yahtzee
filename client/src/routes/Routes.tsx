@@ -79,6 +79,7 @@ const Routes = () => {
 						)}`,
 					},
 				});
+				console.log("response: ", response);
 
 				if (response.status === 200) {
 					console.log("User validated - set the socket and user");
