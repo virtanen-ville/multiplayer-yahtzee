@@ -1,7 +1,7 @@
 {
-	"name": "soveltava-harjoitustyo-cvivi007xamk",
+	"name": "yahtzee-server",
 	"version": "1.0.0",
-	"description": "Tämä on repository Sovellusohjelmointi 3 -opintojakson oppimistehtävien palautukseen. Kaikki palautukset oppimistehtäviin tulee sijoittaa sitä vastaavaan GitHub-repositoryyn. Jokaiselle oppimistehtävälle luodaan uusi repository tehtävänannon yhteydessä olevasta linkistä.",
+	"description": "This is a backend server for yahtzee app",
 	"main": "index.ts",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
@@ -10,15 +10,15 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/xamk-so3/soveltava-harjoitustyo-cvivi007xamk.git"
+		"url": "git+https://github.com/virtanen-ville/multiplayer-yahtzee.git"
 	},
 	"keywords": [],
-	"author": "",
+	"author": "Ville Virtanen",
 	"license": "ISC",
 	"bugs": {
-		"url": "https://github.com/xamk-so3/soveltava-harjoitustyo-cvivi007xamk/issues"
+		"url": "https://github.com/virtanen-ville/multiplayer-yahtzee/issues"
 	},
-	"homepage": "https://github.com/xamk-so3/soveltava-harjoitustyo-cvivi007xamk#readme",
+	"homepage": "https://yahtzee-cvivi007xamk.herokuapp.com",
 	"devDependencies": {
 		"@types/node": "^18.8.4",
 		"nodemon": "^2.0.20",
