@@ -1,0 +1,731 @@
+{
+	"fields": [
+		{
+			"name": "_id",
+			"path": "_id",
+			"count": 27,
+			"types": [
+				{
+					"name": "String",
+					"bsonType": "String",
+					"path": "_id",
+					"count": 27,
+					"values": [
+						"6383a81cca13bfd4a3707a52",
+						"63872421579939df958946de",
+						"638725a4579939df958946e0",
+						"63867734549cf2a4a93fc54c",
+						"63866f0b9f23b99aa2e605b6",
+						"63875ba6d84fc5be360301ec",
+						"63848e3a7106f1b87dcab8ad",
+						"63866f0b9f23b99aa2e605b5",
+						"638333f5091b4159b8bb5cb8",
+						"638342192c7f8cd230d9736b",
+						"6383a81cca13bfd4a3707a51",
+						"638675f55defaeb1019a7e51",
+						"6388a84321efa40cd7d29afe",
+						"638702e62fa3ba042a762a27",
+						"6385c4aba2fae0edb93f9b8d",
+						"6383390a091b4159b8bb5cbc",
+						"63864e6f6eefb1a2499a656d",
+						"638338f9091b4159b8bb5cba",
+						"63875aa1b6658b4653157c58",
+						"638675f55defaeb1019a7e50",
+						"6385c4aba2fae0edb93f9b8e",
+						"638716a6db5ea41f87459e0b",
+						"6387580e579939df958946e4",
+						"63867734549cf2a4a93fc54d",
+						"63872701579939df958946e2",
+						"6388a84321efa40cd7d29aff",
+						"63860910ecc4ecef52a73783"
+					],
+					"total_count": 0,
+					"probability": 1,
+					"unique": 27,
+					"has_duplicates": false
+				}
+			],
+			"total_count": 27,
+			"type": "String",
+			"has_duplicates": false,
+			"probability": 1
+		},
+		{
+			"name": "points",
+			"path": "points",
+			"count": 27,
+			"types": [
+				{
+					"name": "Document",
+					"bsonType": "Document",
+					"path": "points",
+					"count": 27,
+					"fields": [
+						{
+							"name": "chance",
+							"path": "points.chance",
+							"count": 27,
+							"types": [
+								{
+									"name": "Null",
+									"bsonType": "Null",
+									"path": "points.chance",
+									"count": 15,
+									"total_count": 0,
+									"probability": 0.5555555555555556,
+									"unique": 1,
+									"has_duplicates": true
+								},
+								{
+									"name": "Int32",
+									"bsonType": "Int32",
+									"path": "points.chance",
+									"count": 12,
+									"values": [
+										14, 11, 16, 24, 23, 21, 12, 16, 19, 14,
+										19, 17
+									],
+									"total_count": 0,
+									"probability": 0.4444444444444444,
+									"unique": 9,
+									"has_duplicates": true
+								}
+							],
+							"total_count": 27,
+							"type": ["Null", "Int32"],
+							"has_duplicates": true,
+							"probability": 1
+						},
+						{
+							"name": "fives",
+							"path": "points.fives",
+							"count": 27,
+							"types": [
+								{
+									"name": "Null",
+									"bsonType": "Null",
+									"path": "points.fives",
+									"count": 14,
+									"total_count": 0,
+									"probability": 0.5185185185185185,
+									"unique": 1,
+									"has_duplicates": true
+								},
+								{
+									"name": "Int32",
+									"bsonType": "Int32",
+									"path": "points.fives",
+									"count": 13,
+									"values": [
+										15, 15, 15, 15, 15, 15, 0, 15, 15, 15,
+										20, 15, 20
+									],
+									"total_count": 0,
+									"probability": 0.48148148148148145,
+									"unique": 3,
+									"has_duplicates": true
+								}
+							],
+							"total_count": 27,
+							"type": ["Null", "Int32"],
+							"has_duplicates": true,
+							"probability": 1
+						},
+						{
+							"name": "fourOfAKind",
+							"path": "points.fourOfAKind",
+							"count": 27,
+							"types": [
+								{
+									"name": "Null",
+									"bsonType": "Null",
+									"path": "points.fourOfAKind",
+									"count": 15,
+									"total_count": 0,
+									"probability": 0.5555555555555556,
+									"unique": 1,
+									"has_duplicates": true
+								},
+								{
+									"name": "Int32",
+									"bsonType": "Int32",
+									"path": "points.fourOfAKind",
+									"count": 12,
+									"values": [
+										20, 16, 0, 0, 8, 16, 20, 8, 0, 0, 0, 20
+									],
+									"total_count": 0,
+									"probability": 0.4444444444444444,
+									"unique": 4,
+									"has_duplicates": true
+								}
+							],
+							"total_count": 27,
+							"type": ["Null", "Int32"],
+							"has_duplicates": true,
+							"probability": 1
+						},
+						{
+							"name": "fours",
+							"path": "points.fours",
+							"count": 27,
+							"types": [
+								{
+									"name": "Null",
+									"bsonType": "Null",
+									"path": "points.fours",
+									"count": 15,
+									"total_count": 0,
+									"probability": 0.5555555555555556,
+									"unique": 1,
+									"has_duplicates": true
+								},
+								{
+									"name": "Int32",
+									"bsonType": "Int32",
+									"path": "points.fours",
+									"count": 12,
+									"values": [
+										16, 20, 12, 16, 12, 12, 12, 16, 12, 12,
+										16, 12
+									],
+									"total_count": 0,
+									"probability": 0.4444444444444444,
+									"unique": 3,
+									"has_duplicates": true
+								}
+							],
+							"total_count": 27,
+							"type": ["Null", "Int32"],
+							"has_duplicates": true,
+							"probability": 1
+						},
+						{
+							"name": "fullHouse",
+							"path": "points.fullHouse",
+							"count": 27,
+							"types": [
+								{
+									"name": "Int32",
+									"bsonType": "Int32",
+									"path": "points.fullHouse",
+									"count": 14,
+									"values": [
+										16, 21, 0, 21, 11, 0, 21, 23, 17, 27,
+										26, 26, 0, 21
+									],
+									"total_count": 0,
+									"probability": 0.5185185185185185,
+									"unique": 8,
+									"has_duplicates": true
+								},
+								{
+									"name": "Null",
+									"bsonType": "Null",
+									"path": "points.fullHouse",
+									"count": 13,
+									"total_count": 0,
+									"probability": 0.48148148148148145,
+									"unique": 1,
+									"has_duplicates": true
+								}
+							],
+							"total_count": 27,
+							"type": ["Int32", "Null"],
+							"has_duplicates": true,
+							"probability": 1
+						},
+						{
+							"name": "largeStraight",
+							"path": "points.largeStraight",
+							"count": 27,
+							"types": [
+								{
+									"name": "Null",
+									"bsonType": "Null",
+									"path": "points.largeStraight",
+									"count": 15,
+									"total_count": 0,
+									"probability": 0.5555555555555556,
+									"unique": 1,
+									"has_duplicates": true
+								},
+								{
+									"name": "Int32",
+									"bsonType": "Int32",
+									"path": "points.largeStraight",
+									"count": 12,
+									"values": [
+										0, 20, 0, 20, 20, 20, 0, 20, 20, 20, 20,
+										20
+									],
+									"total_count": 0,
+									"probability": 0.4444444444444444,
+									"unique": 2,
+									"has_duplicates": true
+								}
+							],
+							"total_count": 27,
+							"type": ["Null", "Int32"],
+							"has_duplicates": true,
+							"probability": 1
+						},
+						{
+							"name": "onePair",
+							"path": "points.onePair",
+							"count": 27,
+							"types": [
+								{
+									"name": "Null",
+									"bsonType": "Null",
+									"path": "points.onePair",
+									"count": 14,
+									"total_count": 0,
+									"probability": 0.5185185185185185,
+									"unique": 1,
+									"has_duplicates": true
+								},
+								{
+									"name": "Int32",
+									"bsonType": "Int32",
+									"path": "points.onePair",
+									"count": 13,
+									"values": [
+										12, 8, 12, 10, 12, 12, 10, 12, 10, 8,
+										12, 10, 10
+									],
+									"total_count": 0,
+									"probability": 0.48148148148148145,
+									"unique": 3,
+									"has_duplicates": true
+								}
+							],
+							"total_count": 27,
+							"type": ["Null", "Int32"],
+							"has_duplicates": true,
+							"probability": 1
+						},
+						{
+							"name": "ones",
+							"path": "points.ones",
+							"count": 27,
+							"types": [
+								{
+									"name": "Null",
+									"bsonType": "Null",
+									"path": "points.ones",
+									"count": 14,
+									"total_count": 0,
+									"probability": 0.5185185185185185,
+									"unique": 1,
+									"has_duplicates": true
+								},
+								{
+									"name": "Int32",
+									"bsonType": "Int32",
+									"path": "points.ones",
+									"count": 13,
+									"values": [
+										3, 4, 0, 1, 1, 2, 4, 4, 3, 1, 1, 2, 2
+									],
+									"total_count": 0,
+									"probability": 0.48148148148148145,
+									"unique": 5,
+									"has_duplicates": true
+								}
+							],
+							"total_count": 27,
+							"type": ["Null", "Int32"],
+							"has_duplicates": true,
+							"probability": 1
+						},
+						{
+							"name": "sixes",
+							"path": "points.sixes",
+							"count": 27,
+							"types": [
+								{
+									"name": "Null",
+									"bsonType": "Null",
+									"path": "points.sixes",
+									"count": 15,
+									"total_count": 0,
+									"probability": 0.5555555555555556,
+									"unique": 1,
+									"has_duplicates": true
+								},
+								{
+									"name": "Int32",
+									"bsonType": "Int32",
+									"path": "points.sixes",
+									"count": 12,
+									"values": [
+										18, 18, 18, 24, 18, 18, 24, 24, 24, 18,
+										18, 18
+									],
+									"total_count": 0,
+									"probability": 0.4444444444444444,
+									"unique": 2,
+									"has_duplicates": true
+								}
+							],
+							"total_count": 27,
+							"type": ["Null", "Int32"],
+							"has_duplicates": true,
+							"probability": 1
+						},
+						{
+							"name": "smallStraight",
+							"path": "points.smallStraight",
+							"count": 27,
+							"types": [
+								{
+									"name": "Null",
+									"bsonType": "Null",
+									"path": "points.smallStraight",
+									"count": 15,
+									"total_count": 0,
+									"probability": 0.5555555555555556,
+									"unique": 1,
+									"has_duplicates": true
+								},
+								{
+									"name": "Int32",
+									"bsonType": "Int32",
+									"path": "points.smallStraight",
+									"count": 12,
+									"values": [
+										0, 15, 15, 15, 0, 0, 15, 15, 0, 0, 0, 0
+									],
+									"total_count": 0,
+									"probability": 0.4444444444444444,
+									"unique": 2,
+									"has_duplicates": true
+								}
+							],
+							"total_count": 27,
+							"type": ["Null", "Int32"],
+							"has_duplicates": true,
+							"probability": 1
+						},
+						{
+							"name": "threeOfAKind",
+							"path": "points.threeOfAKind",
+							"count": 27,
+							"types": [
+								{
+									"name": "Null",
+									"bsonType": "Null",
+									"path": "points.threeOfAKind",
+									"count": 15,
+									"total_count": 0,
+									"probability": 0.5555555555555556,
+									"unique": 1,
+									"has_duplicates": true
+								},
+								{
+									"name": "Int32",
+									"bsonType": "Int32",
+									"path": "points.threeOfAKind",
+									"count": 12,
+									"values": [
+										15, 18, 18, 18, 18, 0, 18, 0, 18, 18,
+										15, 9
+									],
+									"total_count": 0,
+									"probability": 0.4444444444444444,
+									"unique": 4,
+									"has_duplicates": true
+								}
+							],
+							"total_count": 27,
+							"type": ["Null", "Int32"],
+							"has_duplicates": true,
+							"probability": 1
+						},
+						{
+							"name": "threes",
+							"path": "points.threes",
+							"count": 27,
+							"types": [
+								{
+									"name": "Null",
+									"bsonType": "Null",
+									"path": "points.threes",
+									"count": 14,
+									"total_count": 0,
+									"probability": 0.5185185185185185,
+									"unique": 1,
+									"has_duplicates": true
+								},
+								{
+									"name": "Int32",
+									"bsonType": "Int32",
+									"path": "points.threes",
+									"count": 13,
+									"values": [
+										12, 9, 12, 9, 12, 9, 6, 12, 9, 9, 12,
+										12, 12
+									],
+									"total_count": 0,
+									"probability": 0.48148148148148145,
+									"unique": 3,
+									"has_duplicates": true
+								}
+							],
+							"total_count": 27,
+							"type": ["Null", "Int32"],
+							"has_duplicates": true,
+							"probability": 1
+						},
+						{
+							"name": "total",
+							"path": "points.total",
+							"count": 17,
+							"types": [
+								{
+									"name": "Int32",
+									"bsonType": "Int32",
+									"path": "points.total",
+									"count": 17,
+									"values": [
+										261, 303, 27, 20, 0, 136, 244, 164, 133,
+										239, 23, 231, 219, 34, 279, 249, 291
+									],
+									"total_count": 0,
+									"probability": 0.6296296296296297,
+									"unique": 17,
+									"has_duplicates": false
+								},
+								{
+									"name": "Undefined",
+									"type": "Undefined",
+									"path": "points.total",
+									"count": 10,
+									"total_count": 0,
+									"probability": 0.37037037037037035,
+									"unique": 1,
+									"has_duplicates": true
+								}
+							],
+							"total_count": 27,
+							"type": ["Int32", "Undefined"],
+							"has_duplicates": true,
+							"probability": 0.6296296296296297
+						},
+						{
+							"name": "twoPairs",
+							"path": "points.twoPairs",
+							"count": 27,
+							"types": [
+								{
+									"name": "Null",
+									"bsonType": "Null",
+									"path": "points.twoPairs",
+									"count": 14,
+									"total_count": 0,
+									"probability": 0.5185185185185185,
+									"unique": 1,
+									"has_duplicates": true
+								},
+								{
+									"name": "Int32",
+									"bsonType": "Int32",
+									"path": "points.twoPairs",
+									"count": 13,
+									"values": [
+										14, 22, 20, 14, 10, 12, 22, 22, 22, 10,
+										20, 14, 22
+									],
+									"total_count": 0,
+									"probability": 0.48148148148148145,
+									"unique": 5,
+									"has_duplicates": true
+								}
+							],
+							"total_count": 27,
+							"type": ["Null", "Int32"],
+							"has_duplicates": true,
+							"probability": 1
+						},
+						{
+							"name": "twos",
+							"path": "points.twos",
+							"count": 27,
+							"types": [
+								{
+									"name": "Null",
+									"bsonType": "Null",
+									"path": "points.twos",
+									"count": 15,
+									"total_count": 0,
+									"probability": 0.5555555555555556,
+									"unique": 1,
+									"has_duplicates": true
+								},
+								{
+									"name": "Int32",
+									"bsonType": "Int32",
+									"path": "points.twos",
+									"count": 12,
+									"values": [
+										6, 6, 6, 8, 4, 2, 4, 4, 4, 6, 8, 8
+									],
+									"total_count": 0,
+									"probability": 0.4444444444444444,
+									"unique": 4,
+									"has_duplicates": true
+								}
+							],
+							"total_count": 27,
+							"type": ["Null", "Int32"],
+							"has_duplicates": true,
+							"probability": 1
+						},
+						{
+							"name": "yahtzee",
+							"path": "points.yahtzee",
+							"count": 27,
+							"types": [
+								{
+									"name": "Null",
+									"bsonType": "Null",
+									"path": "points.yahtzee",
+									"count": 15,
+									"total_count": 0,
+									"probability": 0.5555555555555556,
+									"unique": 1,
+									"has_duplicates": true
+								},
+								{
+									"name": "Int32",
+									"bsonType": "Int32",
+									"path": "points.yahtzee",
+									"count": 12,
+									"values": [
+										50, 50, 0, 0, 0, 0, 0, 0, 0, 50, 50, 50
+									],
+									"total_count": 0,
+									"probability": 0.4444444444444444,
+									"unique": 2,
+									"has_duplicates": true
+								}
+							],
+							"total_count": 27,
+							"type": ["Null", "Int32"],
+							"has_duplicates": true,
+							"probability": 1
+						}
+					],
+					"total_count": 0,
+					"probability": 1
+				}
+			],
+			"total_count": 27,
+			"type": "Document",
+			"has_duplicates": false,
+			"probability": 1
+		},
+		{
+			"name": "userId",
+			"path": "userId",
+			"count": 27,
+			"types": [
+				{
+					"name": "String",
+					"bsonType": "String",
+					"path": "userId",
+					"count": 27,
+					"values": [
+						"6373af9af4b468766e5a3355",
+						"636bf43873f2a7c130f45153",
+						"636bf43873f2a7c130f45153",
+						"6373af9af4b468766e5a3355",
+						"636bb10be407e3ada0c11acd",
+						"636bb10be407e3ada0c11acd",
+						"636bb10be407e3ada0c11acd",
+						"6373af9af4b468766e5a3355",
+						"636bb10be407e3ada0c11acd",
+						"636bb10be407e3ada0c11acd",
+						"636bb10be407e3ada0c11acd",
+						"636bb10be407e3ada0c11acd",
+						"636bb10be407e3ada0c11acd",
+						"636bb10be407e3ada0c11acd",
+						"6373af9af4b468766e5a3355",
+						"636bb10be407e3ada0c11acd",
+						"6373af9af4b468766e5a3355",
+						"636bb10be407e3ada0c11acd",
+						"6373af9af4b468766e5a3355",
+						"6373af9af4b468766e5a3355",
+						"636bb10be407e3ada0c11acd",
+						"6373af9af4b468766e5a3355",
+						"636bf43873f2a7c130f45153",
+						"636bb10be407e3ada0c11acd",
+						"636bf43873f2a7c130f45153",
+						"6373af9af4b468766e5a3355",
+						"636bb10be407e3ada0c11acd"
+					],
+					"total_count": 0,
+					"probability": 1,
+					"unique": 3,
+					"has_duplicates": true
+				}
+			],
+			"total_count": 27,
+			"type": "String",
+			"has_duplicates": true,
+			"probability": 1
+		},
+		{
+			"name": "username",
+			"path": "username",
+			"count": 27,
+			"types": [
+				{
+					"name": "String",
+					"bsonType": "String",
+					"path": "username",
+					"count": 27,
+					"values": [
+						"laura",
+						"virtanen",
+						"virtanen",
+						"laura",
+						"ville",
+						"ville",
+						"ville",
+						"laura",
+						"ville",
+						"ville",
+						"ville",
+						"ville",
+						"ville",
+						"ville",
+						"laura",
+						"ville",
+						"laura",
+						"ville",
+						"laura",
+						"laura",
+						"ville",
+						"laura",
+						"virtanen",
+						"ville",
+						"virtanen",
+						"laura",
+						"ville"
+					],
+					"total_count": 0,
+					"probability": 1,
+					"unique": 3,
+					"has_duplicates": true
+				}
+			],
+			"total_count": 27,
+			"type": "String",
+			"has_duplicates": true,
+			"probability": 1
+		}
+	],
+	"count": 27
+}
