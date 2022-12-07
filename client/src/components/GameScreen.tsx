@@ -11,7 +11,7 @@ import {
 	Typography,
 	AlertColor,
 } from "@mui/material";
-import { useUser } from "../context/userContext";
+import { useUser, useSetUser } from "../context/userContext";
 
 import { useSetMatch, useMatch } from "../context/matchContext";
 import {
@@ -60,6 +60,7 @@ const GameScreen = ({ guestName, setGameoverDialogOpen }: any) => {
 		severity: "success",
 		text: "",
 	});
+	const setUser = useSetUser();
 
 	const isTurnOfPlayer = (playerName: string) => {
 		return (
@@ -68,6 +69,8 @@ const GameScreen = ({ guestName, setGameoverDialogOpen }: any) => {
 		);
 	};
 	const [logOutAlert, setLogOutAlert] = useState(false);
+	const [loggedOut, setLoggedOut] = useState(false);
+
 	const [dismissPressed, setDismissPressed] = useState(false);
 
 	// If the navigation is from the Home page, the guestName will be passed in as a prop.
@@ -117,7 +120,11 @@ const GameScreen = ({ guestName, setGameoverDialogOpen }: any) => {
 			let decoded = jwt_decode<CustomJwtPayload>(token as string);
 
 			if (!decoded.exp) return;
-			if (
+			if (decoded.exp * 1000 < Date.now()) {
+				setLoggedOut(true);
+				setUser(null);
+				setPlaymode("");
+			} else if (
 				decoded.exp * 1000 < Date.now() + 1000 * 60 * 10 &&
 				!dismissPressed
 			) {
@@ -126,7 +133,7 @@ const GameScreen = ({ guestName, setGameoverDialogOpen }: any) => {
 		} catch (err) {
 			console.log(err);
 		}
-	}, [dismissPressed, scores]);
+	}, [dismissPressed, scores, setPlaymode, setUser]);
 
 	const dismissLogOutAlert = () => {
 		setDismissPressed(true);
@@ -358,9 +365,39 @@ const GameScreen = ({ guestName, setGameoverDialogOpen }: any) => {
 					color: "#fff",
 					zIndex: (theme) => theme.zIndex.drawer + 1,
 				}}
-				open={logOutAlert}
+				open={logOutAlert || loggedOut}
 			>
-				{logOutAlert && (
+				{loggedOut ? (
+					<Alert severity="error">
+						<AlertTitle>Session expired!</AlertTitle>
+						<Typography variant="subtitle2">
+							Go back to home or login page
+						</Typography>
+						<Button
+							sx={{ mt: 2, mr: 2 }}
+							size="small"
+							color="error"
+							variant="contained"
+							onClick={() => {
+								setLoggedOut(false);
+								navigate("/");
+							}}
+						>
+							Go to Home
+						</Button>
+						<Button
+							sx={{ mt: 2, ml: 2 }}
+							size="small"
+							variant="contained"
+							onClick={() => {
+								setLoggedOut(false);
+								navigate("/login");
+							}}
+						>
+							Go to Login{" "}
+						</Button>
+					</Alert>
+				) : logOutAlert ? (
 					<Alert severity="warning">
 						<AlertTitle>Session expires in 10 minutes</AlertTitle>
 						<Typography variant="subtitle2">
@@ -373,7 +410,7 @@ const GameScreen = ({ guestName, setGameoverDialogOpen }: any) => {
 							variant="contained"
 							onClick={dismissLogOutAlert}
 						>
-							End session in 10 minutes
+							Dismiss
 						</Button>
 						<Button
 							sx={{ mt: 2, ml: 2 }}
@@ -381,10 +418,10 @@ const GameScreen = ({ guestName, setGameoverDialogOpen }: any) => {
 							variant="contained"
 							onClick={getNewToken}
 						>
-							Keep me logged in
+							Refresh the session
 						</Button>
 					</Alert>
-				)}
+				) : null}
 			</Backdrop>
 
 			{playmode === "multi" && !match.isActive ? (
