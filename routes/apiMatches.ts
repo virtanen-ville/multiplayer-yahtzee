@@ -70,11 +70,10 @@ apiMatchesRouter.get(
 		res: express.Response,
 		next: express.NextFunction
 	) => {
-		if (!req.query) {
+		if (Object.keys(req.query).length === 0) {
 			const allMatches = await matchesCollection.find().toArray();
 			res.send(allMatches);
-		}
-		if (req.query) {
+		} else {
 			const match = await matchesCollection.findOne({
 				"scores.userId": req.query.userId as unknown as ObjectId,
 				scores: { $size: 1 },

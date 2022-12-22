@@ -106,7 +106,7 @@ apiRoomsRouter.get(
 		res: express.Response,
 		next: express.NextFunction
 	) => {
-		if (!req.query) {
+		if (Object.keys(req.query).length === 0) {
 			const allRooms = await roomsCollection.find().toArray();
 			res.send(allRooms);
 		} else {
